@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Organic Rice Store</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+    font-family:Arial;
+    margin:0;
+    background:#f4f6f4;
+    transition:0.3s;
+}
+.dark{
+    background:#121212;
+    color:white;
+}
+
+header{
+    background:#2e7d32;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+button{
+    padding:6px 12px;
+    border:none;
+    cursor:pointer;
+    background:#1b5e20;
+    color:white;
+    border-radius:4px;
+}
+
+.container{
+    padding:20px;
+}
+
+.controls{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+input{
+    padding:8px;
+    width:200px;
+}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:white;
+    padding:12px;
+    border-radius:8px;
+    box-shadow:0 0 6px #ccc;
+    text-align:center;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:scale(1.05);
+}
+
+.dark .card{
+    background:#1f1f1f;
+}
+
+.cart{
+    margin-top:20px;
+    padding:10px;
+    background:#e8f5e9;
+}
+
+.dark .cart{
+    background:#2a2a2a;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>🌾 Organic Rice Store</h2>
+    <button onclick="toggleDark()">🌙 Dark Mode</button>
+</header>
+
+<div class="container">
+
+    <div class="controls">
+        <input type="text" id="search" placeholder="Search rice..." onkeyup="filterProducts()">
+        <h3>🛒 Cart: <span id="cartCount">0</span></h3>
+    </div>
+
+    <div class="products" id="products"></div>
+
+    <div class="cart">
+        <h3>Cart Items:</h3>
+        <ul id="cartList"></ul>
+    </div>
+
+</div>
+
+<script>
+const products = [
+    {name:"Basmati Rice", price:120},
+    {name:"Brown Rice", price:95},
+    {name:"Red Rice", price:110},
+    {name:"Organic White Rice", price:80}
+];
+
+let cart = [];
+
+function displayProducts(list){
+    const container = document.getElementById("products");
+    container.innerHTML = "";
+    
+    list.forEach(p=>{
+        container.innerHTML += `
+        <div class="card">
+            <h3>${p.name}</h3>
+            <p>₹${p.price}/kg</p>
+            <button onclick="addToCart('${p.name}')">Add</button>
+        </div>`;
+    });
+}
+
+function addToCart(name){
+    cart.push(name);
+    document.getElementById("cartCount").innerText = cart.length;
+    
+    const list = document.getElementById("cartList");
+    list.innerHTML += `<li>${name}</li>`;
+}
+
+function filterProducts(){
+    const value = document.getElementById("search").value.toLowerCase();
+    const filtered = products.filter(p=>p.name.toLowerCase().includes(value));
+    displayProducts(filtered);
+}
+
+function toggleDark(){
+    document.body.classList.toggle("dark");
+}
+
+displayProducts(products);
+</script>
+
+</body>
+</html>
